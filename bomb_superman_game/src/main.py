@@ -40,7 +40,7 @@ while True:
                 character.move_left()
             elif event.key == K_RIGHT or event.key == K_d:
                 print('RIGHT')
-
+                character.move_right()
             elif event.key == K_SPACE:
                 print('SPACE')
             elif event.key == K_ESCAPE:
