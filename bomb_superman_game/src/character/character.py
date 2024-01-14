@@ -1,3 +1,5 @@
+import os
+image_path = os.path.join(os.path.dirname(__file__), "..\..\img\character\character_normal.png")
 import pygame
 from attribute import attribute
 
@@ -5,4 +7,27 @@ class Character(attribute.Attribute, pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
+        self.image = pygame.Surface((50, 50)) # 建立一個 surface
+        self.image = pygame.image.load(image_path).convert_alpha() # 載入圖片
+        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.rect = self.image.get_rect() # 取得圖片矩形
+        self.rect.x, self.rect.y = self.get_pos() # 設定圖片矩形位置
+
+    def move_up(self):
+        self.rect.y -= self.get_speed()
+        self.set_pos(self.rect.x, self.rect.y)
+
+    def move_down(self):
+        self.rect.y += self.get_speed()
+        self.set_pos(self.rect.x, self.rect.y)
+
+    def move_left(self):
+        self.rect.x -= self.get_speed()
+        self.set_pos(self.rect.x, self.rect.y)
+
+    def move_right(self):
+        self.rect.x += self.get_speed()
+        self.set_pos(self.rect.x, self.rect.y)
+
+
 

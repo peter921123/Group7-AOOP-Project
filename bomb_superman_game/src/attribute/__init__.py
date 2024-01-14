@@ -1,4 +1,4 @@
 #
 # attribute/__init__.py
 #
-print("Initializing attribute")
+print("Initializing attribute package...")
