@@ -29,23 +29,27 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == KEYDOWN:
-            if event.key == K_UP or event.key == K_w:
-                print('UP')
-                character.move_up()
-            elif event.key == K_DOWN or event.key == K_s:
-                print('DOWN')
-                character.move_down()
-            elif event.key == K_LEFT or event.key == K_a:
-                print('LEFT')
-                character.move_left()
-            elif event.key == K_RIGHT or event.key == K_d:
-                print('RIGHT')
-                character.move_right()
-            elif event.key == K_SPACE:
+            if event.key == K_SPACE:
                 print('SPACE')
             elif event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+
+        keys = pygame.key.get_pressed()
+        if keys[K_UP] or keys[K_w]:
+            print('UP')
+            character.move_up()
+        if keys[K_DOWN] or keys[K_s]:
+            print('DOWN')
+            character.move_down()
+        if keys[K_LEFT] or keys[K_a]:
+            print('LEFT')
+            character.move_left()
+        if keys[K_RIGHT] or keys[K_d]:
+            print('RIGHT')
+            character.move_right()
+
+        character.check_position()
 
         window_surface.blit(window_background, (0, 0))
         window_surface.blit(character.image, character.rect)
