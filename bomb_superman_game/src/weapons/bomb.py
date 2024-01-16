@@ -22,7 +22,7 @@ class Bomb(pygame.sprite.Sprite):
         Bomb.all_bombs.add(self)
 
     def update(self):
-        self.current_image += 0.25
+        self.current_image += 0.2
         if self.current_image >= len(Bomb.images_list):
             self.current_image = 0
         self.image = Bomb.images_list[int(self.current_image)] # 載入圖片

@@ -18,7 +18,7 @@ window_background = pygame.transform.scale(window_background, window_size) # 調
 window_surface.blit(window_background, (0, 0)) # 貼上背景圖片
 
 character = character.Character() # 建立角色物件
-character.set_pos(100, 100) # 設定角色位置
+character.set_pos(0, 0) # 設定角色位置
 window_surface.blit(character.image, character.rect) # 繪製角色
 
 bomb.Bomb.load_images() # 載入炸彈圖片
