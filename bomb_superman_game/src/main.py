@@ -40,7 +40,7 @@ while True: # 事件迴圈監聽事件，進行事件處理
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
                 print('SPACE')
-                bomb.Bomb(character.get_pos()[0], character.get_pos()[1])
+                character.place_bomb()
             elif event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()

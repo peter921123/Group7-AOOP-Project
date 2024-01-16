@@ -4,6 +4,14 @@ class Attribute():
         self.strength = strength
         self.pos_x = 0
         self.pos_y = 0
+        self.max_bomb_number = 1
+        self.current_bomb_number = 0
+
+    def get_max_bomb_number(self):
+        return self.max_bomb_number
+
+    def get_current_bomb_number(self):
+        return self.current_bomb_number
 
     def get_strength(self):
         return self.strength
@@ -13,6 +21,12 @@ class Attribute():
 
     def get_pos(self):
         return (self.pos_x, self.pos_y)
+
+    def set_max_bomb_number(self, max_bomb_number):
+        self.max_bomb_number = max_bomb_number
+
+    def set_current_bomb_number(self, current_bomb_number):
+        self.current_bomb_number = current_bomb_number
 
     def set_strength(self, strength):
         self.strength = strength

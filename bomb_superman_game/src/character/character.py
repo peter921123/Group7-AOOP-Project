@@ -1,8 +1,9 @@
 import os
 image_path = os.path.join(os.path.dirname(__file__), "..\..\img\character\character_normal.png")
 import pygame
-from attribute import attribute
 from config import *
+from attribute import attribute
+from weapons import bomb
 
 class Character(attribute.Attribute, pygame.sprite.Sprite):
 
@@ -39,6 +40,12 @@ class Character(attribute.Attribute, pygame.sprite.Sprite):
     def move_right(self):
         self.rect.x += self.get_speed()
         self.set_pos(self.rect.x, self.rect.y)
+
+    def place_bomb(self):
+        if (self.get_current_bomb_number() < self.get_max_bomb_number()):
+            self.set_current_bomb_number(self.get_current_bomb_number() + 1)
+            bomb.Bomb(self.get_pos()[0], self.get_pos()[1])
+
 
 
 
