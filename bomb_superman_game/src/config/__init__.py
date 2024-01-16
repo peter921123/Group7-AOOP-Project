@@ -11,3 +11,5 @@ window_length = 800 # 視窗長度
 window_width = 600 # 視窗寬度
 window_size = (window_length, window_width) # 視窗大小
 window_caption = "Bomb Superman" # 視窗標題
+
+grid_size = 50 # 格子大小

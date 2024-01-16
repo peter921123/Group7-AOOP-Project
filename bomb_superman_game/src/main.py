@@ -46,6 +46,7 @@ while True: # 事件迴圈監聽事件，進行事件處理
                 sys.exit()
 
         keys = pygame.key.get_pressed()
+
         if keys[K_UP] or keys[K_w]:
             print('UP')
             character.move_up()
