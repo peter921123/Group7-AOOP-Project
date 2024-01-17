@@ -13,10 +13,11 @@ class Character(attribute.Attribute, mysprite.MySprite):
     def __init__(self):
         super().__init__()
         mysprite.MySprite.__init__(self) # Don't know why the group doesn't work without this line.
-        self.image = pygame.Surface((50, 50)) # 建立一個 surface
-        self.image = pygame.image.load(image_path).convert_alpha() # 載入圖片
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.Surface((40, 40)) # 建立一個 surface
         self.rect = self.image.get_rect() # 取得圖片矩形
+        self.image = pygame.image.load(image_path).convert_alpha() # 載入圖片
+        self.image = pygame.transform.scale(self.image, (48, 48))
+        # self.rect = self.image.get_rect() # 取得圖片矩形
         self.rect.x, self.rect.y = self.get_pos() # 設定圖片矩形位置
         self.placed_bomb = pygame.sprite.Group() # 建立一個用來保持 character 所放置的炸彈的 Group
         Character.all_characters.add(self)
