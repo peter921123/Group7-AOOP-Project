@@ -2,10 +2,36 @@ import os
 image_path = [os.path.join(os.path.dirname(__file__), f"..\..\img\weapons\\bomb_{i}.png") for i in range(4)]
 import pygame
 
-class Bomb(pygame.sprite.Sprite):
+from config import *
+from mysprite import mysprite
+
+class Bomb(mysprite.MySprite):
 
     all_bombs = pygame.sprite.Group()
     images_list = []
+
+    class Explosion(mysprite.MySprite):
+
+        all_explosions = pygame.sprite.Group()
+
+        def __init__(self, pos_x, pos_y):
+            super().__init__()
+            print('Explosion init')
+            self.image = pygame.Surface((grid_size, grid_size)) # 建立一個 surface
+            self.image.fill((255, 255, 255)) # 填滿白色
+            self.rect = self.image.get_rect() # 取得圖片矩形
+            self.rect.x = pos_x
+            self.rect.y = pos_y
+            self.timer = pygame.time.get_ticks() # 計時器
+            Bomb.Explosion.all_explosions.add(self)
+
+        def update(self):
+            if(pygame.time.get_ticks() - self.timer) > 500:
+               self.kill()
+
+        def kill(self):
+            print("Explosion kill")
+            super().kill()
 
     @staticmethod
     def load_images():
@@ -14,6 +40,7 @@ class Bomb(pygame.sprite.Sprite):
 
     def __init__(self, pos_x, pos_y, strength = 1):
         super().__init__()
+        print('Bomb init')
         self.strength = strength # 炸彈威力
         self.timer = pygame.time.get_ticks() # 計時器
         self.image = pygame.Surface((50, 50)) # 建立一個 surface
@@ -38,4 +65,21 @@ class Bomb(pygame.sprite.Sprite):
         self.image = Bomb.images_list[int(self.current_image)] # 更新圖片
 
     def explode(self):
+        direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        for i in range(4):
+            for j in range(self.strength):
+                pos_x = self.rect.x + direction[i][0] * grid_size * (j + 1)
+                pos_y = self.rect.y + direction[i][1] * grid_size * (j + 1)
+                explosion = Bomb.Explosion(pos_x, pos_y)
+                collided_sprites = pygame.sprite.spritecollide(explosion, mysprite.MySprite.all_sprites, False) # 檢查 Explosion 是否與其他 Sprite 碰撞
+                for collided_sprite in collided_sprites: # 將碰撞到的 Sprite 中去掉自己與所有 Explosion Object
+                    if (collided_sprite in Bomb.Explosion.all_explosions):
+                        collided_sprites.remove(collided_sprite)
+                if (len(collided_sprites) > 0):
+                    for collided_sprite in collided_sprites:
+                        if (collided_sprite not in Bomb.all_bombs): # 如果碰撞到的 Sprite 不是炸彈，則刪除
+                            collided_sprite.kill()
+                            # p.s. 一開始想嘗試實行連鎖引爆，但會出現重複呼叫和遞迴過深的問題，所以暫時先不實作。
+                    break
+
         self.kill() # 從所有 Group 中移除此 Sprite

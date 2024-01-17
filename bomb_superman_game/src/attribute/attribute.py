@@ -1,11 +1,12 @@
 class Attribute():
-    def __init__(self, speed = 5, strength = 1):
+
+    def __init__(self, speed = 2.5, strength = 1, max_bomb_number = 5, current_bomb_number = 0):
         self.speed = speed
         self.strength = strength
         self.pos_x = 0
         self.pos_y = 0
-        self.max_bomb_number = 1
-        self.current_bomb_number = 0
+        self.max_bomb_number = max_bomb_number
+        self.current_bomb_number = current_bomb_number
 
     def get_max_bomb_number(self):
         return self.max_bomb_number

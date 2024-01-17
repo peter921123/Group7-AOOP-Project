@@ -2,16 +2,17 @@ import os
 image_path = os.path.join(os.path.dirname(__file__), "..\..\img\character\character_normal.png")
 import pygame
 from config import *
+from mysprite import mysprite
 from attribute import attribute
 from weapons import bomb
 
-class Character(attribute.Attribute, pygame.sprite.Sprite):
+class Character(attribute.Attribute, mysprite.MySprite):
 
     all_characters = pygame.sprite.Group()
 
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self) # Don't know why the group doesn't work without this line.
         super().__init__()
+        mysprite.MySprite.__init__(self) # Don't know why the group doesn't work without this line.
         self.image = pygame.Surface((50, 50)) # 建立一個 surface
         self.image = pygame.image.load(image_path).convert_alpha() # 載入圖片
         self.image = pygame.transform.scale(self.image, (50, 50))
@@ -57,5 +58,10 @@ class Character(attribute.Attribute, pygame.sprite.Sprite):
             pos_x = round(self.get_pos()[0] / grid_size) * grid_size
             pos_y = round(self.get_pos()[1] / grid_size) * grid_size
             self.placed_bomb.add(bomb.Bomb(pos_x, pos_y, self.get_strength()))
+
+    def kill(self):
+        print("Character kill")
+        super().kill()
+        self.placed_bomb.empty()
 
 
