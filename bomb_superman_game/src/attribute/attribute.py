@@ -1,6 +1,6 @@
 class Attribute():
 
-    def __init__(self, speed = 2.5, strength = 1, max_bomb_number = 5, current_bomb_number = 0):
+    def __init__(self, speed = 2, strength = 1, max_bomb_number = 1, current_bomb_number = 0):
         self.speed = speed
         self.strength = strength
         self.pos_x = 0

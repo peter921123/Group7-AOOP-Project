@@ -36,8 +36,7 @@ while True: # 事件迴圈監聽事件，進行事件處理
 
     for event in pygame.event.get(): # 迭代整個事件迴圈，若有符合事件則對應處理
 
-        # 當使用者結束視窗，程式也結束
-        if event.type == QUIT:
+        if event.type == QUIT: # 如果點擊關閉視窗則結束迴圈
             pygame.quit()
             sys.exit()
         if event.type == KEYDOWN:
@@ -66,9 +65,8 @@ while True: # 事件迴圈監聽事件，進行事件處理
     window_surface.blit(window_background, (0, 0)) # 貼上背景圖片
     all_sprites.update() # 更新所有 Sprite
     all_sprites.draw(window_surface) # 繪製所有 Sprite
-    # print(len(all_sprites)) # 印出所有 Sprite 的數量
     # bomb.Bomb.all_bombs.update() # 更新炸彈圖片
     # bomb.Bomb.all_bombs.draw(window_surface) # 繪製炸彈
     # character.Character.all_characters.update() # 更新角色圖片
-    # character.Character.all_characters.draw(window_surface) # 繪製角色
+    character.Character.all_characters.draw(window_surface) # 繪製角色
     pygame.display.update() # 更新畫面
