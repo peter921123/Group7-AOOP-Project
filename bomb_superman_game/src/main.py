@@ -1,4 +1,5 @@
 import sys
+
 import pygame
 from pygame.locals import *
 
@@ -7,6 +8,8 @@ from character import character
 from attribute import attribute
 from weapons import bomb
 from config import *
+from obstacles import box
+from factories import mapfactory
 
 pygame.init() # 初始化pygame
 
@@ -23,6 +26,9 @@ player.set_pos(0, 0) # 設定角色位置
 window_surface.blit(player.image, player.rect) # 繪製角色
 
 bomb.Bomb.load_images() # 載入炸彈圖片
+
+map_factory = mapfactory.MapFactory() # 建立地圖工廠
+map_factory.create_map(1) # 建立地圖
 
 pygame.display.update() # 更新畫面
 

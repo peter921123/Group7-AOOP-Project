@@ -1,5 +1,6 @@
 import os
 image_path = [os.path.join(os.path.dirname(__file__), f"..\..\img\weapons\\bomb_{i}.png") for i in range(4)]
+
 import pygame
 
 from config import *
