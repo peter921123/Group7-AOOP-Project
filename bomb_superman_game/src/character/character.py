@@ -5,6 +5,7 @@ from config import *
 from mysprite import mysprite
 from attribute import attribute
 from weapons import bomb
+from items import item
 
 class Character(attribute.Attribute, mysprite.MySprite):
 
@@ -44,6 +45,7 @@ class Character(attribute.Attribute, mysprite.MySprite):
             "left": [-1, 0],
             "right": [1, 0]
         }
+
         if len(pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)) > 1:
             self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
             return
@@ -51,7 +53,9 @@ class Character(attribute.Attribute, mysprite.MySprite):
 
         old_center = self.rect.center
         self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
-        if len(pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)) > 1:
+        collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
+        collided_sprites = [sprite for sprite in collided_sprites if sprite not in item.Item.all_items]
+        if len(collided_sprites) > 1:
             print("Character detect collision, can't move.")
             self.rect.center = old_center
         # 若移動後才碰撞到某個 sprite，則不移動。

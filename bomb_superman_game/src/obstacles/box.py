@@ -6,6 +6,7 @@ import pygame
 from config import *
 from mysprite import mysprite
 from obstacles import obstacle
+from items import item
 
 class Box(obstacle.Obstacle):
 
@@ -22,4 +23,5 @@ class Box(obstacle.Obstacle):
 
     def kill(self):
         print("Box kill")
+        item.Item.item_generate(self.rect.x, self.rect.y)
         super().kill()
