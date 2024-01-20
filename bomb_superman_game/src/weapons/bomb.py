@@ -39,6 +39,21 @@ class Bomb(mysprite.MySprite):
         Bomb.images_list = [pygame.image.load(i).convert_alpha() for i in image_path] # 載入圖片
         Bomb.images_list = [pygame.transform.scale(i, (50, 50)) for i in Bomb.images_list] # 調整圖片大小
 
+    @staticmethod
+    def is_getting_bombed(character):
+        direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        for bomb in Bomb.all_bombs:
+            for i in range(4):
+                for j in range(bomb.strength):
+                    pos_x = bomb.rect.x + direction[i][0] * grid_size * (j + 1)
+                    pos_y = bomb.rect.y + direction[i][1] * grid_size * (j + 1)
+                    explosion = Bomb.Explosion(pos_x, pos_y)
+                    collided_sprites = pygame.sprite.spritecollide(explosion, mysprite.MySprite.all_sprites, False)
+                    explosion.kill()
+                    if (character in collided_sprites):
+                        return True
+        return False
+
     def __init__(self, pos_x, pos_y, strength = 1):
         super().__init__()
         print('Bomb init')
