@@ -5,6 +5,8 @@ from pygame.locals import *
 
 from mysprite import mysprite
 from character import character
+from character import enemy
+from character import player
 from attribute import attribute
 from weapons import bomb
 from config import *
@@ -21,9 +23,11 @@ window_background = pygame.image.load(background_path).convert_alpha() # 載入�
 window_background = pygame.transform.scale(window_background, window_size) # 調整背景圖片大小
 window_surface.blit(window_background, (0, 0)) # 貼上背景圖片
 
-player = character.Character() # 建立角色物件
-player.set_pos(0, 0) # 設定角色位置
-window_surface.blit(player.image, player.rect) # 繪製角色
+ply = player.Player(pos_x = 800, pos_y = 600) # 建立角色物件
+window_surface.blit(ply.image, ply.rect) # 繪製角色
+
+enemy = enemy.Enemy(pos_x = 1000, pos_y = 800) # 建立敵人物件
+window_surface.blit(enemy.image, enemy.rect) # 繪製敵人
 
 bomb.Bomb.load_images() # 載入炸彈圖片
 
@@ -48,7 +52,7 @@ while True: # 事件迴圈監聽事件，進行事件處理
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
                 print('SPACE')
-                player.place_bomb()
+                ply.place_bomb()
             elif event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
@@ -57,16 +61,16 @@ while True: # 事件迴圈監聽事件，進行事件處理
 
     if keys[K_UP] or keys[K_w]:
         #print('UP')
-        player.move_up()
+        ply.move_up()
     if keys[K_DOWN] or keys[K_s]:
-        #print('DOWN')
-        player.move_down()
+        print('DOWN')
+        ply.move_down()
     if keys[K_LEFT] or keys[K_a]:
         #print('LEFT')
-        player.move_left()
+        ply.move_left()
     if keys[K_RIGHT] or keys[K_d]:
         #print('RIGHT')
-        player.move_right()
+        ply.move_right()
 
     window_surface.blit(window_background, (0, 0)) # 貼上背景圖片
     all_sprites.update() # 更新所有 Sprite
