@@ -7,6 +7,7 @@ class Attribute():
         #self.pos_y = pos_y
         self.max_bomb_number = max_bomb_number
         self.current_bomb_number = current_bomb_number
+        self.is_dead = False
 
     def get_max_bomb_number(self):
         return self.max_bomb_number
@@ -19,6 +20,9 @@ class Attribute():
 
     def get_speed(self):
         return self.speed
+
+    def get_is_dead(self):
+        return self.is_dead
 
     #def get_pos(self):
     #    return (self.pos_x, self.pos_y)

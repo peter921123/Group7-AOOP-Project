@@ -92,5 +92,6 @@ class Character(attribute.Attribute, mysprite.MySprite):
         print("Character kill")
         super().kill()
         self.placed_bomb.empty()
+        self.is_dead = True
 
 
