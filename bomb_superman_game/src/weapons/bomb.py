@@ -42,6 +42,7 @@ class Bomb(mysprite.MySprite):
     @staticmethod
     def is_getting_bombed(character):
         direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        bombs = [bomb for bomb in Bomb.all_bombs if (pygame.time.get_ticks() - bomb.timer) < 1000]
         for bomb in Bomb.all_bombs:
             for i in range(4):
                 for j in range(bomb.strength):

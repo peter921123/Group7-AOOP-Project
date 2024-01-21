@@ -121,11 +121,11 @@ class IsCloseToBoxNode(ConditionNode):
         direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         for dir in direction:
             for i in range(1, enemy.get_strength() + 1):
-                next_x, next_y = enemy.rect.x + dir[0] * grid_size * i, enemy.rect.y + dir[1] * grid_size * i
+                next_x, next_y = round(enemy.rect.x / grid_size) * grid_size + dir[0] * grid_size * i, round(enemy.rect.y / grid_size) * grid_size + dir[1] * grid_size * i
                 if not algorithm.is_inside_window(next_x, next_y):
                     break
 
-                if algorithm.is_blocked(next_x, next_y):
+                if algorithm.is_obstacle(next_x, next_y):
                     is_close_to_box = True
 
         print(f"檢查：是否靠近箱子 {is_close_to_box}")
@@ -163,7 +163,8 @@ class EscapeFromBombNode(ActionNode):
             return False
         print("Enemy is escaping from bomb")
         enemy.move_to_grid(nearest_grid[0], nearest_grid[1])
-        enemy.is_just_placed_bomb = False
+        if (not pygame.sprite.spritecollide(enemy, bomb.Bomb.all_bombs, False)):
+            enemy.is_just_placed_bomb = False
         return True
 
 
@@ -178,6 +179,7 @@ class PlaceBombNode(ActionNode):
         print("Enemy is placing bomb")
         enemy.place_bomb()
         enemy.is_just_placed_bomb = True
+        enemy.target_box = None
         return True
 
 class PickUpItemNode(ActionNode):
@@ -210,6 +212,9 @@ class GetCloseToNearestBoxNode(ActionNode):
         if (enemy.target_box is None):
             print("Enemy can't find nearest box")
             return False
+        if (algorithm.is_getting_bombed(enemy.target_box.rect.x, enemy.target_box.rect.y)):
+            print("Enemy can't reach box because it will get bombed")
+            return False
         print("Enemy is getting close to nearest box")
         enemy.move_to_grid(enemy.target_box.rect.x, enemy.target_box.rect.y)
         return True
@@ -223,7 +228,7 @@ class Enemy(character.Character):
     def __init__(self, pos_x, pos_y):
         super().__init__(pos_x, pos_y)
         Enemy.all_enemies.add(self)
-        self.maximum_movement_per_frame = 25
+        self.maximum_movement_per_frame = 1
         self.movement_counter = 0
         self.update_counter = 0
         self.can_reach_player = False
@@ -264,7 +269,7 @@ class Enemy(character.Character):
 
     def update(self):
         self.update_counter += 1
-        if self.update_counter % 30 == 0:
+        if self.update_counter % 15 == 0:
             self.movement_counter = 0
             self.behavior_tree.execute(self)
             print(f"Enemy is at ({self.rect.x}, {self.rect.y})")
@@ -282,7 +287,7 @@ class Enemy(character.Character):
         #fail_attempt = [False, False, False, False]
         fail_attempt = 0
         while self.rect.x != grid_x or self.rect.y != grid_y and self.movement_counter < self.maximum_movement_per_frame:
-            if fail_attempt >= 6 * self.maximum_movement_per_frame:
+            if fail_attempt >= 16 * self.maximum_movement_per_frame:
                 return False
             '''
             if grid_x > self.rect.x and not fail_attempt[0]:
@@ -306,19 +311,23 @@ class Enemy(character.Character):
             if grid_x > self.rect.x:
                 if not self.move_right():
                     fail_attempt += 1
-                self.increase_movement_counter()
+                else:
+                    self.increase_movement_counter()
             elif grid_x < self.rect.x:
                 if not self.move_left():
                     fail_attempt += 1
-                self.increase_movement_counter()
+                else:
+                    self.increase_movement_counter()
             if grid_y > self.rect.y:
                 if not self.move_down():
                     fail_attempt += 1
-                self.increase_movement_counter()
+                else:
+                    self.increase_movement_counter()
             elif grid_y < self.rect.y:
                 if not self.move_up():
                     fail_attempt += 1
-                self.increase_movement_counter()
+                else:
+                    self.increase_movement_counter()
 
     def move_towards_target(self, target):
         path = algorithm.a_star(self, target)
