@@ -55,7 +55,7 @@ class Character(attribute.Attribute, mysprite.MySprite):
             collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
             collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters and sprite not in bomb.Bomb.all_bombs)]
             if len(collided_sprites) >= 1:
-                print("Character detect collision, can't move.")
+                #print("Character detect collision, can't move.")
                 self.rect.center = old_center
                 return False
         else: # 若移動後才碰撞到某個 sprite，則不可移動。
@@ -64,7 +64,7 @@ class Character(attribute.Attribute, mysprite.MySprite):
             collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
             collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters)]
             if len(collided_sprites) >= 1:
-                print("Character detect collision, can't move.")
+                #print("Character detect collision, can't move.")
                 self.rect.center = old_center
                 return False
         return True
@@ -89,7 +89,7 @@ class Character(attribute.Attribute, mysprite.MySprite):
             self.placed_bomb.add(bomb.Bomb(pos_x, pos_y, self.get_strength()))
 
     def kill(self):
-        print("Character kill")
+        #print("Character kill")
         super().kill()
         self.placed_bomb.empty()
         self.is_dead = True

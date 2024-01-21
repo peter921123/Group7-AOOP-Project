@@ -14,7 +14,7 @@ class Box(obstacle.Obstacle):
 
     def __init__(self, pos_x, pos_y):
         super().__init__(pos_x, pos_y, grid_size, grid_size, True)
-        print('Box init')
+        #print('Box init')
 
         self.image = pygame.image.load(image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
@@ -22,6 +22,6 @@ class Box(obstacle.Obstacle):
         Box.all_boxes.add(self)
 
     def kill(self):
-        print("Box kill")
+        #print("Box kill")
         item.Item.item_generate(self.rect.x, self.rect.y)
         super().kill()

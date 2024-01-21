@@ -9,7 +9,7 @@ class Obstacle(mysprite.MySprite):
 
     def __init__(self, pos_x, pos_y, width, height, destroyable = False):
         super().__init__()
-        print('Obstacle init')
+        #print('Obstacle init')
 
         self.image = pygame.Surface((width, height)) # 建立一個 surface
         self.rect = self.image.get_rect() # 取得圖片矩形
@@ -23,7 +23,7 @@ class Obstacle(mysprite.MySprite):
         pass
 
     def kill(self):
-        print("Obstacle kill")
+        #print("Obstacle kill")
         super().kill()
 
     def is_destroyable(self):

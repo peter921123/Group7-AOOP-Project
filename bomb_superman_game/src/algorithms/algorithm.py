@@ -35,7 +35,7 @@ def is_getting_bombed(x, y):
     temp.rect = pygame.Rect(x, y, grid_size, grid_size)
     if bomb.Bomb.is_getting_bombed(temp):
         temp.kill()
-        print (f"This grid {x, y} is getting bombed.")
+        #print (f"This grid {x, y} is getting bombed.")
         return True
     temp.kill()
     return False
@@ -69,7 +69,7 @@ def nearest_grid_not_exploded(start):
                 continue
             temp.kill()
             '''
-            print (f"Nearest grid not exploded is {next_x, next_y}")
+            #print (f"Nearest grid not exploded is {next_x, next_y}")
             return (next_x, next_y)
     return None
 
