@@ -23,7 +23,7 @@ window_background = pygame.image.load(background_path).convert_alpha() # 載入�
 window_background = pygame.transform.scale(window_background, window_size) # 調整背景圖片大小
 window_surface.blit(window_background, (0, 0)) # 貼上背景圖片
 
-ply = player.Player(pos_x = 800, pos_y = 600) # 建立角色物件
+ply = player.Player(pos_x = 0, pos_y = 0) # 建立角色物件
 window_surface.blit(ply.image, ply.rect) # 繪製角色
 
 enemy = enemy.Enemy(pos_x = 1000, pos_y = 800) # 建立敵人物件
@@ -63,7 +63,7 @@ while True: # 事件迴圈監聽事件，進行事件處理
         #print('UP')
         ply.move_up()
     if keys[K_DOWN] or keys[K_s]:
-        print('DOWN')
+        #print('DOWN')
         ply.move_down()
     if keys[K_LEFT] or keys[K_a]:
         #print('LEFT')

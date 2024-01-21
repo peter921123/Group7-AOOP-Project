@@ -46,18 +46,28 @@ class Character(attribute.Attribute, mysprite.MySprite):
             "right": [1, 0]
         }
 
-        if len(pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)) > 1:
-            self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
-            return
-        # 如果在移動前已經與某個 sprite 碰撞，則可移動。
-        old_center = self.rect.center
-        self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
         collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
-        collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters)]
-        if len(collided_sprites) >= 1:
-            print("Character detect collision, can't move.")
-            self.rect.center = old_center
-        # 若移動後才碰撞到某個 sprite，則不移動。
+        just_placed_bomb = [sprite for sprite in collided_sprites if sprite in bomb.Bomb.all_bombs]
+
+        if len(just_placed_bomb) >= 1: # 若移動前就碰撞到炸彈，可移動至非炸彈位置。
+            old_center = self.rect.center
+            self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
+            collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
+            collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters and sprite not in bomb.Bomb.all_bombs)]
+            if len(collided_sprites) >= 1:
+                print("Character detect collision, can't move.")
+                self.rect.center = old_center
+                return False
+        else: # 若移動後才碰撞到某個 sprite，則不可移動。
+            old_center = self.rect.center
+            self.rect.center = (self.rect.center[0] + direction_dict[direction][0] * self.get_speed(), self.rect.center[1] + direction_dict[direction][1] * self.get_speed())
+            collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
+            collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters)]
+            if len(collided_sprites) >= 1:
+                print("Character detect collision, can't move.")
+                self.rect.center = old_center
+                return False
+        return True
 
     def move_up(self):
         self.move("up")

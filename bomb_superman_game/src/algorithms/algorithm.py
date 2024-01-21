@@ -6,6 +6,7 @@ from mysprite import mysprite
 from obstacles import obstacle
 from character import character
 from items import item
+from weapons import bomb
 
 grid_size = 50
 window_width = 1000
@@ -29,6 +30,16 @@ def is_blocked(x, y):
         return True
     return False
 
+def is_getting_bombed(x, y):
+    temp = mysprite.MySprite()
+    temp.rect = pygame.Rect(x, y, grid_size, grid_size)
+    if bomb.Bomb.is_getting_bombed(temp):
+        temp.kill()
+        print (f"This grid {x, y} is getting bombed.")
+        return True
+    temp.kill()
+    return False
+
 class Node:
     def __init__(self, x, y, cost, prev):
         self.x = x
@@ -42,6 +53,26 @@ class Node:
 def heuristic(a, b):
     return abs(a.x - b.x) + abs(a.y - b.y)
 
+def nearest_grid_not_exploded(start):
+    for i in range(1, 4):
+        for dx, dy in [(-grid_size, 0), (grid_size, 0), (0, -grid_size), (0, grid_size)]:
+            next_x, next_y = start.rect.x + dx * i, start.rect.y + dy * i
+            if not is_inside_window(next_x, next_y) or is_blocked(next_x, next_y):
+                continue
+
+            if is_getting_bombed(next_x, next_y):
+                continue
+            '''
+            temp = pygame.sprite.Sprite()
+            temp.rect = pygame.Rect(next_x, next_y, grid_size, grid_size)
+            if bomb.Bomb.is_getting_bombed(temp):
+                continue
+            temp.kill()
+            '''
+            print (f"Nearest grid not exploded is {next_x, next_y}")
+            return (next_x, next_y)
+    return None
+
 def a_star(start, goal):
     open_list = []
     closed_list = set()
@@ -54,7 +85,6 @@ def a_star(start, goal):
     while open_list:
         current_node = heapq.heappop(open_list)
         closed_list.add((current_node.x, current_node.y))
-        #print(current_node.x, current_node.y)
         if current_node.x == goal_node.x and current_node.y == goal_node.y:
             path = []
             while current_node is not None:
@@ -64,7 +94,7 @@ def a_star(start, goal):
 
         for dx, dy in [(-grid_size, 0), (grid_size, 0), (0, -grid_size), (0, grid_size)]:
             next_x, next_y = current_node.x + dx, current_node.y + dy
-            if not is_inside_window(next_x, next_y) or is_obstacle(next_x, next_y) or (next_x, next_y) in closed_list:
+            if not is_inside_window(next_x, next_y) or is_blocked(next_x, next_y) or (next_x, next_y) in closed_list:
                 continue
             next_node = Node(next_x, next_y, current_node.cost + 1 + heuristic(goal_node, current_node), current_node)
             heapq.heappush(open_list, next_node)
@@ -72,4 +102,6 @@ def a_star(start, goal):
     return None
 
 def get_distance(a, b):
+    if a_star(a, b) is None:
+        return None
     return len(a_star(a, b))

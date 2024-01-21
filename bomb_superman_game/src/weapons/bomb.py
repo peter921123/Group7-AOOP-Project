@@ -51,6 +51,7 @@ class Bomb(mysprite.MySprite):
                     collided_sprites = pygame.sprite.spritecollide(explosion, mysprite.MySprite.all_sprites, False)
                     explosion.kill()
                     if (character in collided_sprites):
+                        print (f"Character {character} is getting bombed.")
                         return True
         return False
 
