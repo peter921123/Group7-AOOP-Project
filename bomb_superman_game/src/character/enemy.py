@@ -269,7 +269,7 @@ class Enemy(character.Character):
 
     def update(self):
         self.update_counter += 1
-        if self.update_counter % 15 == 0:
+        if self.update_counter % 30 == 0:
             self.movement_counter = 0
             self.behavior_tree.execute(self)
             print(f"Enemy is at ({self.rect.x}, {self.rect.y})")

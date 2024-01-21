@@ -63,7 +63,7 @@ class GameMode():
 
         while True: # 事件迴圈監聽事件，進行事件處理
 
-            self.clock.tick(45) # 遊戲迴圈每秒執行60次
+            self.clock.tick(60) # 遊戲迴圈每秒執行45次
 
             all_sprites = mysprite.MySprite.all_sprites # 建立一個用來保持所有 Sprite 的 Group
 
