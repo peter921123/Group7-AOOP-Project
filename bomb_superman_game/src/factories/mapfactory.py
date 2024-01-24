@@ -6,7 +6,7 @@ from obstacles import box
 class MapFactory():
 
     def __init__(self):
-        print('MapFactory init')
+        #print('MapFactory init')
         pass
 
     def create_map(self, map_type):

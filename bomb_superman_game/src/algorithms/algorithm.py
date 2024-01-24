@@ -35,7 +35,6 @@ def is_getting_bombed(x, y):
     temp.rect = pygame.Rect(x, y, grid_size, grid_size)
     if bomb.Bomb.is_getting_bombed(temp):
         temp.kill()
-        print (f"This grid {x, y} is getting bombed.")
         return True
     temp.kill()
     return False
@@ -54,6 +53,7 @@ def heuristic(a, b):
     return abs(a.x - b.x) + abs(a.y - b.y)
 
 def nearest_grid_not_exploded(start):
+
     for i in range(1, 4):
         for dx, dy in [(-grid_size, 0), (grid_size, 0), (0, -grid_size), (0, grid_size)]:
             next_x, next_y = start.rect.x + dx * i, start.rect.y + dy * i
@@ -62,14 +62,6 @@ def nearest_grid_not_exploded(start):
 
             if is_getting_bombed(next_x, next_y):
                 continue
-            '''
-            temp = pygame.sprite.Sprite()
-            temp.rect = pygame.Rect(next_x, next_y, grid_size, grid_size)
-            if bomb.Bomb.is_getting_bombed(temp):
-                continue
-            temp.kill()
-            '''
-            print (f"Nearest grid not exploded is {next_x, next_y}")
             return (next_x, next_y)
     return None
 

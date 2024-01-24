@@ -15,7 +15,6 @@ class Item():
 
             def __init__(self, pos_x, pos_y):
                 super().__init__()
-                print('BombStrengthIncreaseItem init')
                 image_path = os.path.join(os.path.dirname(__file__), f"..\..\img\items\\bomb_strength_increase_item.png")
                 self.image = pygame.Surface((40, 40))
                 self.rect = self.image.get_rect()
@@ -26,7 +25,6 @@ class Item():
                 Item.all_items.add(self)
 
             def kill(self):
-                print("BombRangeIncreaseItem kill")
                 super().kill()
 
             def update(self):
@@ -44,7 +42,6 @@ class Item():
 
             def __init__(self, pos_x, pos_y):
                 super().__init__()
-                print('SpeedIncreaseItem init')
                 image_path = os.path.join(os.path.dirname(__file__), f"..\..\img\items\\bomb_strength_increase_item.png")
                 self.image = pygame.Surface((40, 40))
                 self.rect = self.image.get_rect()
@@ -55,7 +52,6 @@ class Item():
                 Item.all_items.add(self)
 
             def kill(self):
-                print("SpeedIncreaseItem kill")
                 super().kill()
 
             def update(self):
@@ -73,7 +69,6 @@ class Item():
 
             def __init__(self, pos_x, pos_y):
                 super().__init__()
-                print('MaxBombNumberIcreaseItem init')
                 image_path = os.path.join(os.path.dirname(__file__), f"..\..\img\items\\bomb_strength_increase_item.png")
                 self.image = pygame.Surface((40, 40))
                 self.rect = self.image.get_rect()
@@ -84,7 +79,6 @@ class Item():
                 Item.all_items.add(self)
 
             def kill(self):
-                print("MaxBombNumberIcreaseItem kill")
                 super().kill()
 
             def update(self):

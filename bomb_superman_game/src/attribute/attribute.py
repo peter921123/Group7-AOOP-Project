@@ -3,8 +3,6 @@ class Attribute():
     def __init__(self, speed = 2, strength = 1, max_bomb_number = 1, current_bomb_number = 0):
         self.speed = speed
         self.strength = strength
-        #self.pos_x = pos_x
-        #self.pos_y = pos_y
         self.max_bomb_number = max_bomb_number
         self.current_bomb_number = current_bomb_number
         self.is_dead = False
@@ -24,9 +22,6 @@ class Attribute():
     def get_is_dead(self):
         return self.is_dead
 
-    #def get_pos(self):
-    #    return (self.pos_x, self.pos_y)
-
     def set_max_bomb_number(self, max_bomb_number):
         self.max_bomb_number = max_bomb_number
 
@@ -38,8 +33,4 @@ class Attribute():
 
     def set_speed(self, speed):
         self.speed = speed
-
-    #def set_pos(self, x, y):
-    #    self.pos_x = x
-    #    self.pos_y = y
 

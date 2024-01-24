@@ -18,14 +18,12 @@ class Character(attribute.Attribute, mysprite.MySprite):
         self.rect = self.image.get_rect() # 取得圖片矩形
         self.image = pygame.image.load(image_path).convert_alpha() # 載入圖片
         self.image = pygame.transform.scale(self.image, (48, 48))
-        # self.rect = self.image.get_rect() # 取得圖片矩形
         self.rect.x, self.rect.y = pos_x, pos_y # 設定圖片矩形位置
         self.placed_bomb = pygame.sprite.Group() # 建立一個用來保持 character 所放置的炸彈的 Group
         Character.all_characters.add(self)
 
     def update(self):
         self.check_position() # 檢查角色位置
-        #self.set_pos(self.rect.x, self.rect.y) # 設定角色位置
         self.set_current_bomb_number(len(self.placed_bomb)) # 檢查並更新角色目前放置的炸彈數量
 
     def check_position(self):
@@ -55,7 +53,6 @@ class Character(attribute.Attribute, mysprite.MySprite):
             collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
             collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters and sprite not in bomb.Bomb.all_bombs)]
             if len(collided_sprites) >= 1:
-                print("Character detect collision, can't move.")
                 self.rect.center = old_center
                 return False
         else: # 若移動後才碰撞到某個 sprite，則不可移動。
@@ -64,7 +61,6 @@ class Character(attribute.Attribute, mysprite.MySprite):
             collided_sprites = pygame.sprite.spritecollide(self, mysprite.MySprite.all_sprites, False)
             collided_sprites = [sprite for sprite in collided_sprites if (sprite not in item.Item.all_items and sprite not in Character.all_characters)]
             if len(collided_sprites) >= 1:
-                print("Character detect collision, can't move.")
                 self.rect.center = old_center
                 return False
         return True
@@ -89,7 +85,6 @@ class Character(attribute.Attribute, mysprite.MySprite):
             self.placed_bomb.add(bomb.Bomb(pos_x, pos_y, self.get_strength()))
 
     def kill(self):
-        print("Character kill")
         super().kill()
         self.placed_bomb.empty()
         self.is_dead = True

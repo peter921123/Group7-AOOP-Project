@@ -16,7 +16,6 @@ class BehaviorNode:
 
     def execute(self, enemy):
         if enemy.maximum_movement_per_frame == enemy.movement_counter:
-            print("Enemy has reached maximum movement per frame")
             return True
 
 class SequenceNode(BehaviorNode):
@@ -55,7 +54,6 @@ class IsGettingBombedNode(ConditionNode):
 
     def execute(self, enemy):
         is_getting_bombed = bomb.Bomb.is_getting_bombed(enemy)
-        print(f"檢查：是否有炸彈會炸到自己 {is_getting_bombed}")
         return is_getting_bombed
 
 class IsJustPlacedBombNode(ConditionNode):
@@ -64,7 +62,6 @@ class IsJustPlacedBombNode(ConditionNode):
 
     def execute(self, enemy):
         is_just_placed_bomb = enemy.is_just_placed_bomb
-        print(f"檢查：是否剛放置炸彈 {is_just_placed_bomb}")
         return is_just_placed_bomb
 
 class IsCloseToPlayerNode(ConditionNode):
@@ -75,7 +72,6 @@ class IsCloseToPlayerNode(ConditionNode):
         is_close_to_player = False
         if enemy.can_reach_player and enemy.get_distance_to_target(enemy.target_player) <= enemy.get_strength():
             is_close_to_player = True
-        print(f"檢查：是否靠近玩家 {is_close_to_player}")
         return is_close_to_player
 
 class CanReachPlayerNode(ConditionNode):
@@ -90,7 +86,6 @@ class CanReachPlayerNode(ConditionNode):
                 target_player = _
                 can_reach_player = True
                 break
-        print(f"檢查：是否可以到達玩家 {can_reach_player}")
         enemy.can_reach_player = can_reach_player
         enemy.target_player = target_player
         return can_reach_player
@@ -109,7 +104,6 @@ class CanReachItemNode(ConditionNode):
                 break
         enemy.can_reach_item = can_reach_item
         enemy.target_item = target_item
-        print(f"檢查：是否可以到達道具 {can_reach_item}")
         return can_reach_item
 
 class IsCloseToBoxNode(ConditionNode):
@@ -128,7 +122,6 @@ class IsCloseToBoxNode(ConditionNode):
                 if algorithm.is_obstacle(next_x, next_y):
                     is_close_to_box = True
 
-        print(f"檢查：是否靠近箱子 {is_close_to_box}")
         return is_close_to_box
 
 ### End of Condition Nodes ###
@@ -150,7 +143,6 @@ class EscapeFromExplosionNode(ActionNode):
         nearest_grid_not_exploded = algorithm.nearest_grid_not_exploded(enemy)
         if nearest_grid_not_exploded is None:
             return False
-        print("Enemy is escaping from exlplosion")
         enemy.move_to_grid(nearest_grid_not_exploded[0], nearest_grid_not_exploded[1])
         return True
 
@@ -161,7 +153,6 @@ class EscapeFromBombNode(ActionNode):
         nearest_grid = enemy.find_nearest_grid()
         if nearest_grid is None:
             return False
-        print("Enemy is escaping from bomb")
         enemy.move_to_grid(nearest_grid[0], nearest_grid[1])
         if (not pygame.sprite.spritecollide(enemy, bomb.Bomb.all_bombs, False)):
             enemy.is_just_placed_bomb = False
@@ -174,9 +165,7 @@ class PlaceBombNode(ActionNode):
 
     def execute(self, enemy):
         if (enemy.get_current_bomb_number() >= enemy.get_max_bomb_number()):
-            print("Enemy can't place bomb")
             return True
-        print("Enemy is placing bomb")
         enemy.place_bomb()
         enemy.is_just_placed_bomb = True
         enemy.target_box = None
@@ -187,7 +176,6 @@ class PickUpItemNode(ActionNode):
         pass
 
     def execute(self, enemy):
-        print("Enemy is picking up item")
         enemy.move_towards_target(enemy.target_item)
         return True
 
@@ -196,7 +184,6 @@ class ChasePlayerNode(ActionNode):
         pass
 
     def execute(self, enemy):
-        print("Enemy is chasing player")
         for _ in player.Player.all_players:
             if enemy.is_reachable(_):
                 enemy.move_towards_target(_)
@@ -210,12 +197,9 @@ class GetCloseToNearestBoxNode(ActionNode):
     def execute(self, enemy):
         enemy.find_nearest_box()
         if (enemy.target_box is None):
-            print("Enemy can't find nearest box")
             return False
         if (algorithm.is_getting_bombed(enemy.target_box.rect.x, enemy.target_box.rect.y)):
-            print("Enemy can't reach box because it will get bombed")
             return False
-        print("Enemy is getting close to nearest box")
         enemy.move_to_grid(enemy.target_box.rect.x, enemy.target_box.rect.y)
         return True
 
@@ -269,10 +253,9 @@ class Enemy(character.Character):
 
     def update(self):
         self.update_counter += 1
-        if self.update_counter % 30 == 0:
+        if self.update_counter % 15 == 0:
             self.movement_counter = 0
             self.behavior_tree.execute(self)
-            print(f"Enemy is at ({self.rect.x}, {self.rect.y})")
         super().update()
 
     def is_reachable(self, target): # 檢查 spriteA 是否可以到達 spriteB
@@ -284,29 +267,10 @@ class Enemy(character.Character):
         self.increase_movement_counter()
 
     def move_to_grid(self, grid_x, grid_y):
-        #fail_attempt = [False, False, False, False]
         fail_attempt = 0
         while self.rect.x != grid_x or self.rect.y != grid_y and self.movement_counter < self.maximum_movement_per_frame:
             if fail_attempt >= 16 * self.maximum_movement_per_frame:
                 return False
-            '''
-            if grid_x > self.rect.x and not fail_attempt[0]:
-                if not self.move_right():
-                    fail_attempt[0] = True
-                self.increase_movement_counter()
-            elif grid_x < self.rect.x and not fail_attempt[1]:
-                if not self.move_left():
-                    fail_attempt[1] = True
-                self.increase_movement_counter()
-            if grid_y > self.rect.y and not fail_attempt[2]:
-                if not self.move_down():
-                    fail_attempt[2] = True
-                self.increase_movement_counter()
-            elif grid_y < self.rect.y and not fail_attempt[3]:
-                if not self.move_up():
-                    fail_attempt[3] = True
-                self.increase_movement_counter()
-            '''
 
             if grid_x > self.rect.x:
                 if not self.move_right():
@@ -335,13 +299,6 @@ class Enemy(character.Character):
             return False
 
         for next_x, next_y in path:
-
-            '''
-            if algorithm.is_getting_bombed(next_x, next_y):
-                print (next_x, next_y, "is getting bombed")
-                return False
-            '''
-            print(f"Enemy is moving towards target ({next_x}, {next_y})")
             self.move_to_grid(next_x, next_y)
             if self.movement_counter >= self.maximum_movement_per_frame:
                 return True

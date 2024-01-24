@@ -17,7 +17,6 @@ class Bomb(mysprite.MySprite):
 
         def __init__(self, pos_x, pos_y):
             super().__init__()
-            print('Explosion init')
             self.image = pygame.Surface((grid_size, grid_size)) # 建立一個 surface
             self.image.fill((255, 255, 255)) # 填滿白色
             self.rect = self.image.get_rect() # 取得圖片矩形
@@ -31,7 +30,6 @@ class Bomb(mysprite.MySprite):
                self.kill()
 
         def kill(self):
-            print("Explosion kill")
             super().kill()
 
     @staticmethod
@@ -52,13 +50,11 @@ class Bomb(mysprite.MySprite):
                     collided_sprites = pygame.sprite.spritecollide(explosion, mysprite.MySprite.all_sprites, False)
                     explosion.kill()
                     if (character in collided_sprites):
-                        print (f"Character {character} is getting bombed.")
                         return True
         return False
 
     def __init__(self, pos_x, pos_y, strength = 1):
         super().__init__()
-        print('Bomb init')
         self.strength = strength # 炸彈威力
         self.timer = pygame.time.get_ticks() # 計時器
         self.image = pygame.Surface((50, 50)) # 建立一個 surface
